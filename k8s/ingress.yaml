@@ -2,8 +2,8 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: flask-ml-ingress
-  annotations:
-    kubernetes.io/ingress.class: traefik
+  spec:
+    ingressClassName: traefik
 spec:
   rules:
   - host: tes.kuyen.online
