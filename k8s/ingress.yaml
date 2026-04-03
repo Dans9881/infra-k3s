@@ -16,3 +16,27 @@ spec:
             name: flask-ml
             port:
               number: 80
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: flask-ml-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  ingressClassName: traefik
+  tls:
+  - hosts:
+    - tes.kuyen.online
+    secretName: flask-ml-tls
+  rules:
+  - host: tes.kuyen.online
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: flask-ml
+            port:
+              number: 80
