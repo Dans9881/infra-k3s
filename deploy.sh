@@ -25,7 +25,6 @@ echo "=== WAIT CERT-MANAGER DEPLOYMENTS ==="
 kubectl wait --for=condition=Available deployment \
   -n cert-manager --all --timeout=180s
 
-# 🔥 FIX RACE CONDITION (INI YANG TADI NGEBUNUH LO)
 echo "=== WAIT CERT-MANAGER WEBHOOK ==="
 
 for i in {1..30}; do
@@ -38,11 +37,11 @@ for i in {1..30}; do
   sleep 5
 done
 
-# extra buffer biar admission controller bener2 ready
+# 🔥 EXTRA BUFFER
 sleep 15
 
 # -------------------------
-# CLUSTER ISSUER (WITH RETRY 🔥)
+# CLUSTER ISSUER
 # -------------------------
 echo "=== APPLY CLUSTER ISSUER ==="
 
@@ -60,10 +59,10 @@ done
 # DEPLOY APPS
 # -------------------------
 echo "=== DEPLOY APPS ==="
-kubectl apply -f k8s/apps/
+kubectl apply -f k8s/apps/ --recursive
 
 # -------------------------
-# WAIT CERTIFICATE (ANTI 404 HTTPS)
+# WAIT CERTIFICATE
 # -------------------------
 echo "=== WAIT CERTIFICATE READY ==="
 
