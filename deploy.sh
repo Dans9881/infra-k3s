@@ -1,0 +1,29 @@
+#!/bin/bash
+set -e
+
+export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+
+echo "=== INSTALL TRAEFIK ==="
+helm repo add traefik https://traefik.github.io/charts || true
+helm repo update
+
+helm upgrade --install traefik traefik/traefik \
+  -n kube-system \
+  --create-namespace \
+  -f k8s/core/traefik/helm-values.yaml
+
+kubectl rollout status deployment traefik -n kube-system --timeout=180s
+
+echo "=== INSTALL CERT-MANAGER ==="
+kubectl apply -f https://github.com/cert-manager/cert-manager/releases/latest/download/cert-manager.yaml
+
+kubectl wait --for=condition=Available deployment \
+  -n cert-manager --all --timeout=180s
+
+echo "=== APPLY CLUSTER ISSUER ==="
+kubectl apply -f k8s/cert-manager/clusterissuer.yaml
+
+echo "=== DEPLOY APPS ==="
+kubectl apply -f k8s/apps/
+
+echo "=== DONE ==="
