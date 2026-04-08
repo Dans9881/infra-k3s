@@ -39,4 +39,4 @@ for dir in apps/*; do
   fi
 done
 
-echo "=== DONE 🚀 ==="
+echo "=== DONE ==="
