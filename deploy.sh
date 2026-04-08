@@ -14,35 +14,29 @@ helm upgrade --install traefik traefik/traefik \
 
 kubectl rollout status deployment traefik -n kube-system --timeout=180s
 
-# -------------------------
-# CERT MANAGER
-# -------------------------
+echo "=== APPLY TRAEFIK MIDDLEWARE ==="
+kubectl apply -f core/traefik/middleware.yaml
+
 echo "=== INSTALL CERT-MANAGER ==="
 kubectl apply -f https://github.com/cert-manager/cert-manager/releases/latest/download/cert-manager.yaml
 
-kubectl wait --for=condition=Available deployment \
-  -n cert-manager --all --timeout=180s
+kubectl wait --for=condition=Available deployment -n cert-manager --all --timeout=180s
 
 echo "=== WAIT WEBHOOK ==="
 sleep 20
 
-# -------------------------
-# ISSUER
-# -------------------------
 echo "=== APPLY ISSUER ==="
 kubectl apply -f cert-manager/clusterissuer.yaml
 
 sleep 10
 
-# -------------------------
-# APPS
-# -------------------------
 echo "=== DEPLOY APPS ==="
 
-if [ -d "apps" ] && [ "$(ls -A apps 2>/dev/null)" ]; then
-  kubectl apply -f apps/
-else
-  echo "No apps found, skipping deployment"
-fi
+for dir in apps/*; do
+  if [ -d "$dir" ]; then
+    echo "Deploying $dir ..."
+    kubectl apply -f "$dir"
+  fi
+done
 
 echo "=== DONE 🚀 ==="
