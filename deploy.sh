@@ -10,7 +10,7 @@ helm repo update
 helm upgrade --install traefik traefik/traefik \
   -n kube-system \
   --create-namespace \
-  -f k8s/core/traefik/helm-values.yaml
+  -f core/traefik/helm-values.yaml
 
 kubectl rollout status deployment traefik -n kube-system --timeout=180s
 
@@ -30,7 +30,7 @@ sleep 20
 # ISSUER
 # -------------------------
 echo "=== APPLY ISSUER ==="
-kubectl apply -f k8s/cert-manager/clusterissuer.yaml
+kubectl apply -f cert-manager/clusterissuer.yaml
 
 sleep 10
 
@@ -38,6 +38,11 @@ sleep 10
 # APPS
 # -------------------------
 echo "=== DEPLOY APPS ==="
-kubectl apply -f k8s/apps/
+
+if [ -d "apps" ] && [ "$(ls -A apps 2>/dev/null)" ]; then
+  kubectl apply -f apps/
+else
+  echo "No apps found, skipping deployment"
+fi
 
 echo "=== DONE 🚀 ==="
