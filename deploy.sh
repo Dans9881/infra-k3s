@@ -30,8 +30,22 @@ kubectl apply -f cert-manager/clusterissuer.yaml
 
 sleep 10
 
-echo "=== DEPLOY APPS ==="
+echo "=== INSTALL MONITORING ==="
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts || true
+helm repo add grafana https://grafana.github.io/helm-charts || true
+helm repo update
 
+helm upgrade --install monitoring prometheus-community/kube-prometheus-stack \
+  -n monitoring \
+  --create-namespace
+
+helm upgrade --install loki grafana/loki-stack \
+  -n monitoring \
+  --set grafana.enabled=false
+
+kubectl rollout status deployment monitoring-grafana -n monitoring --timeout=180s || true
+
+echo "=== DEPLOY APPS ==="
 for dir in apps/*; do
   if [ -d "$dir" ]; then
     echo "Deploying $dir ..."
