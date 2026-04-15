@@ -1,7 +1,11 @@
 #!/bin/bash
 set -euo pipefail
 
-export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+if [ -f /etc/rancher/k3s/k3s.yaml ]; then
+  export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+else
+  export KUBECONFIG=/etc/kubernetes/admin.conf
+fi
 
 echo "=== INSTALL TRAEFIK ==="
 helm repo add traefik https://traefik.github.io/charts || true
