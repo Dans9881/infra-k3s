@@ -1,6 +1,5 @@
 deployment:
-  hostNetwork: false
+  hostNetwork: true
 
 service:
-  enabled: true
-  type: ClusterIP
+  enabled: false
