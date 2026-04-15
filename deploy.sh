@@ -16,21 +16,27 @@ helm upgrade --install traefik traefik/traefik \
   --create-namespace \
   -f core/traefik/helm-values.yaml
 
-kubectl rollout status deployment traefik -n kube-system --timeout=180s
+kubectl rollout status deployment -n kube-system -l app.kubernetes.io/name=traefik --timeout=180s
 
 echo "=== APPLY TRAEFIK MIDDLEWARE ==="
 kubectl apply -f core/traefik/middleware.yaml
 
 echo "=== INSTALL CERT-MANAGER ==="
-kubectl apply -f https://github.com/cert-manager/cert-manager/releases/latest/download/cert-manager.yaml
+kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.14.5/cert-manager.yaml
 
+echo "=== WAIT CERT-MANAGER READY ==="
 kubectl wait --for=condition=Available deployment -n cert-manager --all --timeout=180s
+kubectl wait --for=condition=Ready pods -n cert-manager --all --timeout=180s
 
 echo "=== WAIT WEBHOOK ==="
 sleep 20
 
 echo "=== APPLY ISSUER ==="
-kubectl apply -f cert-manager/clusterissuer.yaml
+for i in {1..5}; do
+  kubectl apply -f cert-manager/clusterissuer.yaml && break
+  echo "Retry issuer ($i/5)..."
+  sleep 5
+done
 
 sleep 10
 
