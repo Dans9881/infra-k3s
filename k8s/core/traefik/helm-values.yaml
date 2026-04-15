@@ -13,5 +13,6 @@ ports:
     port: 443
     hostPort: 443
 
-nodeSelector:
-  node-role.kubernetes.io/control-plane: "true"
+additionalArguments:
+  - "--entrypoints.web.address=:80"
+  - "--entrypoints.websecure.address=:443"
