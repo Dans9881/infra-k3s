@@ -51,7 +51,8 @@ helm upgrade --install monitoring prometheus-community/kube-prometheus-stack \
 
 helm upgrade --install loki grafana/loki-stack \
   -n monitoring \
-  --set grafana.enabled=false
+  --set grafana.enabled=false \
+  --set grafana.defaultDatasourceEnabled=false
 
 kubectl rollout status deployment monitoring-grafana -n monitoring --timeout=180s || true
 
