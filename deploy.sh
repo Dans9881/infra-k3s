@@ -47,14 +47,18 @@ helm repo update
 
 helm upgrade --install monitoring prometheus-community/kube-prometheus-stack \
   -n monitoring \
-  --create-namespace
+  --create-namespace \
+  --set grafana.sidecar.datasources.enabled=false \
+  --set grafana.adminPassword=admin123 \
+  --set grafana.persistence.enabled=false
 
 helm upgrade --install loki grafana/loki-stack \
   -n monitoring \
   --set grafana.enabled=false \
   --set grafana.defaultDatasourceEnabled=false
 
-kubectl rollout status deployment monitoring-grafana -n monitoring --timeout=180s || true
+echo "=== WAIT GRAFANA READY ==="
+kubectl rollout status deployment monitoring-grafana -n monitoring --timeout=180s
 
 echo "=== DEPLOY APPS ==="
 for dir in apps/*; do
