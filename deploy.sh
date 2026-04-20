@@ -7,6 +7,16 @@ else
   export KUBECONFIG=/etc/kubernetes/admin.conf
 fi
 
+echo "=== WAIT KUBERNETES API READY ==="
+for i in {1..30}; do
+  if kubectl get nodes >/dev/null 2>&1; then
+    echo "Kubernetes is ready!"
+    break
+  fi
+  echo "Waiting for API... ($i/30)"
+  sleep 5
+done
+
 echo "=== INSTALL TRAEFIK ==="
 helm repo add traefik https://traefik.github.io/charts || true
 helm repo update
@@ -14,7 +24,8 @@ helm repo update
 helm upgrade --install traefik traefik/traefik \
   -n kube-system \
   --create-namespace \
-  -f core/traefik/helm-values.yaml
+  -f core/traefik/values.yaml \
+  --wait --timeout 5m
 
 kubectl rollout status deployment -n kube-system -l app.kubernetes.io/name=traefik --timeout=180s
 
@@ -48,14 +59,14 @@ helm repo update
 helm upgrade --install monitoring prometheus-community/kube-prometheus-stack \
   -n monitoring \
   --create-namespace \
-  --set grafana.sidecar.datasources.enabled=false \
-  --set grafana.adminPassword=admin123 \
-  --set grafana.persistence.enabled=false
+  -f monitoring/values.yaml \
+  --wait --timeout 10m
 
 helm upgrade --install loki grafana/loki-stack \
   -n monitoring \
   --set grafana.enabled=false \
-  --set grafana.defaultDatasourceEnabled=false
+  --set grafana.defaultDatasourceEnabled=false \
+  --wait --timeout 5m
 
 echo "=== WAIT GRAFANA READY ==="
 kubectl rollout status deployment monitoring-grafana -n monitoring --timeout=180s
