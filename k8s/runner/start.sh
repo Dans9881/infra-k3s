@@ -3,9 +3,7 @@ set -e
 
 echo "=== START GITHUB RUNNER ==="
 
-read -p "Repo URL: " REPO_URL
-read -p "Runner Name: " RUNNER_NAME
-read -p "Runner Token: " RUNNER_TOKEN
+source .env
 
 docker rm -f github-runner 2>/dev/null || true
 
