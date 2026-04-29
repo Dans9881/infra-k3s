@@ -3,6 +3,8 @@ kind: Application
 metadata:
   name: traefik
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
 spec:
   project: default
 
@@ -11,8 +13,17 @@ spec:
     chart: traefik
     targetRevision: 26.0.0
     helm:
-      valueFiles:
-        - values.yaml
+      values: |
+        ports:
+          web:
+            port: 80
+            expose: true
+          websecure:
+            port: 443
+            expose: true
+
+        service:
+          type: NodePort   # sementara biar bisa diakses
 
   destination:
     server: https://kubernetes.default.svc
@@ -22,3 +33,5 @@ spec:
     automated:
       prune: true
       selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
