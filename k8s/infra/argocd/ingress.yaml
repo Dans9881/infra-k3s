@@ -1,22 +1,21 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: grafana
-  namespace: monitoring
+  name: argocd
+  namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "1"
     traefik.ingress.kubernetes.io/router.entrypoints: web
 spec:
   ingressClassName: traefik
 
   rules:
-    - host: grafana.k8s
+    - host: argocd.k8s
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: monitoring-grafana
+                name: argocd-server
                 port:
                   number: 80
