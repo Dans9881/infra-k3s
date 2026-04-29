@@ -2,4 +2,5 @@ resources:
   - namespace.yaml
   - infra/cert-manager
   - infra/traefik
+  - infra/monitoring
   - apps/flask-ml
