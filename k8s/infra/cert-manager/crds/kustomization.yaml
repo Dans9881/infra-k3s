@@ -1,2 +1,2 @@
 resources:
-  - cert-manager.crds.yaml
+  - cert-manager-crds.yaml
