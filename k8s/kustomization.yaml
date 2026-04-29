@@ -1,0 +1,5 @@
+resources:
+  - bootstrap/namespace.yaml
+  - infra/cert-manager/crds
+  - infra/cert-manager/controller
+  - infra/cert-manager/clusterissuer
