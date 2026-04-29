@@ -1,2 +1,11 @@
 resources:
-  - cert-manager-crds.yaml
+  - cert-manager.crds.yaml
+
+patches:
+  - target:
+      kind: CustomResourceDefinition
+    patch: |
+      - op: add
+        path: /metadata/annotations
+        value:
+          argocd.argoproj.io/sync-wave: "0"
