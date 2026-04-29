@@ -1,6 +1,5 @@
 resources:
   - namespace.yaml
-  - infra/cert-manager/crds
-  - infra/cert-manager/controller
-  - infra/cert-manager/clusterissuer
+  - infra/cert-manager
+  - infra/traefik
   - apps/flask-ml
