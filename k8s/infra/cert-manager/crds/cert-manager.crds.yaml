@@ -1,1 +1,1 @@
-curl -LO https://github.com/cert-manager/cert-manager/releases/download/v1.14.5/cert-manager.crds.yaml
+curl -L -o cert-manager.crds.yaml https://github.com/cert-manager/cert-manager/releases/download/v1.14.5/cert-manager.crds.yaml
