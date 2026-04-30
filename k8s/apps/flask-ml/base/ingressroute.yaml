@@ -9,11 +9,11 @@ spec:
     - websecure
 
   routes:
-    - match: Host(`tes.kuyen.online`)
+    - match: Host(`flask.kuyen.online`)
       kind: Rule
       services:
         - name: flask-ml
           port: 80
 
   tls:
-    certResolver: letsencrypt
+    certResolver: le

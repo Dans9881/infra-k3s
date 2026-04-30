@@ -21,17 +21,22 @@ spec:
 
         ports:
           web:
+            port: 80
             nodePort: 30080
           websecure:
+            port: 443
             nodePort: 30443
 
         additionalArguments:
           - "--entrypoints.web.address=:80"
           - "--entrypoints.websecure.address=:443"
-          - "--certificatesresolvers.letsencrypt.acme.email=admin@kuyen.online"
-          - "--certificatesresolvers.letsencrypt.acme.storage=/data/acme.json"
-          - "--certificatesresolvers.letsencrypt.acme.httpchallenge=true"
-          - "--certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web"
+
+          - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+          - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
+
+          - "--certificatesresolvers.le.acme.tlschallenge=true"
+          - "--certificatesresolvers.le.acme.email=admin@kuyen.online"
+          - "--certificatesresolvers.le.acme.storage=/data/acme.json"
 
         persistence:
           enabled: true
