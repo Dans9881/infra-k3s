@@ -11,7 +11,7 @@ spec:
 
   source:
     repoURL: https://github.com/Dans9881/platform-k8s
-    path: traefik
+    path: k8s/infra/traefik
     targetRevision: main
 
   destination:
