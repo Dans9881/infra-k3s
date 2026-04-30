@@ -1,2 +1,5 @@
 resources:
-  - platform.yaml
+  - infra/traefik/application.yaml
+  - infra/cert-manager/application.yaml
+  - infra/monitoring/application.yaml
+  - apps/flask-ml/application.yaml
