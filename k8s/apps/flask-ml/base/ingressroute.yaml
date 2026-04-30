@@ -6,7 +6,7 @@ metadata:
 
 spec:
   entryPoints:
-    - web
+    - websecure
 
   routes:
     - match: Host(`tes.kuyen.online`)
@@ -14,3 +14,6 @@ spec:
       services:
         - name: flask-ml
           port: 80
+
+  tls:
+    certResolver: letsencrypt

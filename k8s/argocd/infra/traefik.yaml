@@ -25,6 +25,19 @@ spec:
           websecure:
             nodePort: 30443
 
+        additionalArguments:
+          - "--entrypoints.web.address=:80"
+          - "--entrypoints.websecure.address=:443"
+          - "--certificatesresolvers.letsencrypt.acme.email=admin@kuyen.online"
+          - "--certificatesresolvers.letsencrypt.acme.storage=/data/acme.json"
+          - "--certificatesresolvers.letsencrypt.acme.httpchallenge=true"
+          - "--certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web"
+
+        persistence:
+          enabled: true
+          size: 1Gi
+          path: /data
+
   destination:
     server: https://kubernetes.default.svc
     namespace: traefik
