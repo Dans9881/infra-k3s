@@ -1,21 +1,9 @@
 service:
-  type: NodePort
-
   spec:
-    ports:
-      - name: web
-        port: 80
-        targetPort: web
-        nodePort: 30080
-
-      - name: websecure
-        port: 443
-        targetPort: websecure
-        nodePort: 30443
+    type: NodePort
 
 ports:
   web:
-    expose: true
-
+    nodePort: 30080
   websecure:
-    expose: true
+    nodePort: 30443
