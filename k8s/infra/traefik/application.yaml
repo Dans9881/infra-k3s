@@ -5,16 +5,14 @@ metadata:
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "-3"
+
 spec:
   project: default
 
   source:
-    repoURL: https://traefik.github.io/charts
-    chart: traefik
-    targetRevision: 26.0.0
-    helm:
-      valueFiles:
-        - https://raw.githubusercontent.com/Dans9881/platform-k8s/main/traefik/values.yaml
+    repoURL: https://github.com/Dans9881/platform-k8s
+    path: traefik
+    targetRevision: main
 
   destination:
     server: https://kubernetes.default.svc
