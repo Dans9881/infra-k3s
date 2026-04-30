@@ -1,6 +1,7 @@
 resources:
   - infra/traefik/application.yaml
   - infra/cert-manager/application.yaml
+  - infra/cert-manager/issuer-app.yaml
   - infra/monitoring/monitoring-stack.yaml
   - infra/monitoring/monitoring-ingress.yaml
   - infra/monitoring/manifests
