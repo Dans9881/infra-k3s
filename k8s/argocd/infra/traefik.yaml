@@ -9,9 +9,20 @@ spec:
   project: default
 
   source:
-    repoURL: https://github.com/Dans9881/platform-k8s
-    targetRevision: main
-    path: k8s/infra/traefik/overlays/prod
+    repoURL: https://traefik.github.io/charts
+    chart: traefik
+    targetRevision: 26.0.0
+
+    helm:
+      values: |
+        service:
+          type: NodePort
+
+        ports:
+          web:
+            nodePort: 30080
+          websecure:
+            nodePort: 30443
 
   destination:
     server: https://kubernetes.default.svc

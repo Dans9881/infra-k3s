@@ -9,9 +9,13 @@ spec:
   project: default
 
   source:
-    repoURL: https://github.com/Dans9881/platform-k8s
-    targetRevision: main
-    path: k8s/infra/cert-manager/overlays/prod
+    repoURL: https://charts.jetstack.io
+    chart: cert-manager
+    targetRevision: v1.14.4
+
+    helm:
+      values: |
+        installCRDs: true
 
   destination:
     server: https://kubernetes.default.svc

@@ -9,9 +9,9 @@ spec:
   project: default
 
   source:
-    repoURL: https://github.com/Dans9881/platform-k8s
-    targetRevision: main
-    path: k8s/infra/monitoring/overlays/prod
+    repoURL: https://prometheus-community.github.io/helm-charts
+    chart: kube-prometheus-stack
+    targetRevision: 58.0.0
 
   destination:
     server: https://kubernetes.default.svc
