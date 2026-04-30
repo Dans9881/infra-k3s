@@ -1,4 +1,5 @@
 resources:
+  - root-app.yaml
   - apps/flask-ml.yaml
   - infra/traefik.yaml
   - infra/cert-manager.yaml
