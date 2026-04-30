@@ -1,7 +1,2 @@
 resources:
-  - namespace.yaml
-  - infra/traefik/application.yaml
-  - infra/cert-manager/application.yaml
-  - infra/cert-manager/issuer-app.yaml
-  - infra/argocd
-  - apps/flask-ml
+  - platform.yaml

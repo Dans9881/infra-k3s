@@ -1,4 +1,3 @@
 resources:
   - ingress.yaml
-  - service-patch.yaml
   - insecure.yaml

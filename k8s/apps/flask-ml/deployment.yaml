@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: flask-ml
-        image: dans9881/flask-ml
+        image: dans9881/flask-ml:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 5000

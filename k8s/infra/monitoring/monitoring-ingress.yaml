@@ -1,19 +1,17 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: monitoring
+  name: monitoring-ingress
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   project: default
 
   source:
-    repoURL: https://prometheus-community.github.io/helm-charts
-    chart: kube-prometheus-stack
-    targetRevision: 58.0.0
-    helm:
-      values: |
-        grafana:
-          adminPassword: Password22_
+    repoURL: https://github.com/Dans9881/platform-k8s
+    targetRevision: main
+    path: k8s/infra/monitoring/manifests
 
   destination:
     server: https://kubernetes.default.svc

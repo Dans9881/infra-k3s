@@ -1,4 +1,0 @@
-resources:
-  - namespace.yaml
-  - application.yaml
-  - grafana-ingress.yaml
