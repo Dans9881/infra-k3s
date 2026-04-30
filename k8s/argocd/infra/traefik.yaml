@@ -22,11 +22,6 @@ spec:
             web: 30080
             websecure: 30443
 
-        ports:
-          web:
-            redirectTo:
-              port: websecure
-
   destination:
     server: https://kubernetes.default.svc
     namespace: traefik
