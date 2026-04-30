@@ -24,13 +24,11 @@ spec:
             port: 80
             nodePort: 30080
             expose: true
-            exposedPort: 80
 
           websecure:
             port: 443
             nodePort: 30443
             expose: true
-            exposedPort: 443
 
         additionalArguments:
           - "--entrypoints.web.address=:80"
@@ -44,7 +42,11 @@ spec:
           - "--certificatesresolvers.le.acme.storage=/data/acme.json"
 
         persistence:
-          enabled: false
+          enabled: true
+          size: 1Gi
+          path: /data
+          accessMode: ReadWriteOnce
+          storageClass: local-path
 
   destination:
     server: https://kubernetes.default.svc
