@@ -13,6 +13,10 @@ spec:
     repoURL: https://github.com/Dans9881/platform-k8s
     path: k8s/infra/traefik
     targetRevision: main
+    
+    helm:
+      valueFiles:
+        - values.yaml
 
   destination:
     server: https://kubernetes.default.svc
