@@ -3,13 +3,15 @@ kind: Application
 metadata:
   name: flask-ml
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "4"
 spec:
   project: default
 
   source:
     repoURL: https://github.com/Dans9881/platform-k8s
     targetRevision: main
-    path: k8s/apps/flask-ml
+    path: k8s/apps/flask-ml/overlays/prod
 
   destination:
     server: https://kubernetes.default.svc
@@ -19,5 +21,3 @@ spec:
     automated:
       prune: true
       selfHeal: true
-    syncOptions:
-      - CreateNamespace=true

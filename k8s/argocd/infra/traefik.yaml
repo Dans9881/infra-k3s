@@ -1,21 +1,21 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: argocd-self
+  name: traefik
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "-3"
+    argocd.argoproj.io/sync-wave: "0"
 spec:
   project: default
 
   source:
     repoURL: https://github.com/Dans9881/platform-k8s
     targetRevision: main
-    path: k8s/infra/argocd
+    path: k8s/infra/traefik/overlays/prod
 
   destination:
     server: https://kubernetes.default.svc
-    namespace: argocd
+    namespace: traefik
 
   syncPolicy:
     automated:

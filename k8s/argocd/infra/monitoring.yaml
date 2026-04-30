@@ -1,17 +1,17 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: monitoring-ingress
+  name: monitoring
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-wave: "3"
 spec:
   project: default
 
   source:
     repoURL: https://github.com/Dans9881/platform-k8s
     targetRevision: main
-    path: k8s/infra/monitoring/manifests
+    path: k8s/infra/monitoring/overlays/prod
 
   destination:
     server: https://kubernetes.default.svc

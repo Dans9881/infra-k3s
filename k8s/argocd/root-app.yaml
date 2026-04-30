@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: platform-all
+  name: root-app
   namespace: argocd
 spec:
   project: default
@@ -9,7 +9,7 @@ spec:
   source:
     repoURL: https://github.com/Dans9881/platform-k8s
     targetRevision: main
-    path: k8s
+    path: k8s/argocd
 
   destination:
     server: https://kubernetes.default.svc
@@ -19,11 +19,3 @@ spec:
     automated:
       prune: true
       selfHeal: true
-
-  ignoreDifferences:
-    - group: ""
-      kind: ConfigMap
-      name: argocd-cmd-params-cm
-      namespace: argocd
-      jsonPointers:
-        - /metadata/labels

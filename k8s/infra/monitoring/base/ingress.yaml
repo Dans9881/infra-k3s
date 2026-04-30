@@ -3,18 +3,16 @@ kind: Ingress
 metadata:
   name: grafana
   namespace: monitoring
-  annotations:
-    traefik.ingress.kubernetes.io/router.entrypoints: web
 spec:
   ingressClassName: traefik
   rules:
-    - host: grafana.k8s
+    - host: grafana.local
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: monitoring-grafana
+                name: kube-prometheus-stack-grafana
                 port:
                   number: 80

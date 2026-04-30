@@ -1,21 +1,18 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: argocd
-  namespace: argocd
-  annotations:
-    traefik.ingress.kubernetes.io/router.entrypoints: web
+  name: flask-ml
+  namespace: flask-ml
 spec:
   ingressClassName: traefik
-
   rules:
-    - host: argocd.k8s
+    - host: app.local
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: argocd-server
+                name: flask-ml
                 port:
                   number: 80

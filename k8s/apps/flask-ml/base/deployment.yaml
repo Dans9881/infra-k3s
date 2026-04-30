@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: flask-ml
+  namespace: flask-ml
 spec:
   replicas: 1
   selector:
@@ -13,8 +14,7 @@ spec:
         app: flask-ml
     spec:
       containers:
-      - name: flask-ml
-        image: dans9881/flask-ml:latest
-        imagePullPolicy: Always
-        ports:
-        - containerPort: 5000
+        - name: flask-ml
+          image: nginx
+          ports:
+            - containerPort: 80
