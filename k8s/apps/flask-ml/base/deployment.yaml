@@ -15,6 +15,6 @@ spec:
     spec:
       containers:
         - name: flask-ml
-          image: nginx
+          image: dans9881/flask-ml:latest
           ports:
             - containerPort: 80
