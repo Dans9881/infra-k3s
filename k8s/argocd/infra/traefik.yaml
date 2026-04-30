@@ -17,12 +17,13 @@ spec:
       values: |
         service:
           type: NodePort
+          nodePorts:
+            web: 30080
+            websecure: 30443
 
         ports:
           web:
-            nodePort: 30080
-          websecure:
-            nodePort: 30443
+            redirectTo: websecure
 
   destination:
     server: https://kubernetes.default.svc
@@ -32,3 +33,6 @@ spec:
     automated:
       prune: true
       selfHeal: true
+
+    syncOptions:
+      - CreateNamespace=true
