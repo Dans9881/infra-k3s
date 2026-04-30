@@ -5,6 +5,7 @@ metadata:
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "0"
+
 spec:
   project: default
 
@@ -23,7 +24,8 @@ spec:
 
         ports:
           web:
-            redirectTo: websecure
+            redirectTo:
+              port: websecure
 
   destination:
     server: https://kubernetes.default.svc
@@ -33,6 +35,5 @@ spec:
     automated:
       prune: true
       selfHeal: true
-
     syncOptions:
       - CreateNamespace=true
