@@ -44,9 +44,7 @@ spec:
           - "--certificatesresolvers.le.acme.storage=/data/acme.json"
 
         persistence:
-          enabled: true
-          size: 1Gi
-          path: /data
+          enabled: false
 
   destination:
     server: https://kubernetes.default.svc
