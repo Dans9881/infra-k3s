@@ -4,4 +4,5 @@ resources:
   - infra/traefik.yaml
   - infra/cert-manager.yaml
   - infra/monitoring-crds.yaml
+  - infra/monitoring-extra.yaml
   - infra/monitoring.yaml
