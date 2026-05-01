@@ -5,17 +5,14 @@ metadata:
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "1"
+
 spec:
   project: default
 
   source:
-    repoURL: https://charts.jetstack.io
-    chart: cert-manager
-    targetRevision: v1.14.4
-
-    helm:
-      values: |
-        installCRDs: true
+    repoURL: https://github.com/Dans9881/platform-k8s
+    targetRevision: main
+    path: k8s/infra/cert-manager/overlays/prod
 
   destination:
     server: https://kubernetes.default.svc
