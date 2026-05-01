@@ -6,6 +6,7 @@ metadata:
 
 spec:
   entryPoints:
+    - web
     - websecure
 
   routes:
@@ -16,4 +17,4 @@ spec:
           port: 80
 
   tls:
-    certResolver: le
+    secretName: tes-kuyen-tls

@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: tes-kuyen-cert
+  namespace: flask-ml
+spec:
+  secretName: tes-kuyen-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  dnsNames:
+    - tes.kuyen.online
