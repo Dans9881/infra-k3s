@@ -5,6 +5,7 @@ metadata:
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "3"
+    argocd.argoproj.io/compare-options: IgnoreExtraneous
 spec:
   project: default
 
@@ -25,9 +26,9 @@ spec:
       selfHeal: true
 
   ignoreDifferences:
-    - group: monitoring.coreos.com
+    - group: "*"
       kind: "*"
-    - group: ""
-      kind: Secret
-      name: monitoring-grafana
-      namespace: monitoring
+      managedFieldsManagers:
+        - kube-controller-manager
+        - prometheus-operator
+        - helm
