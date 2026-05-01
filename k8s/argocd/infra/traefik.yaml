@@ -37,6 +37,8 @@ spec:
           - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
 
         providers:
+          kubernetesCRD:
+            enabled: true
           kubernetesIngress:
             publishedService:
               enabled: true
