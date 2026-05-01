@@ -11,7 +11,7 @@ spec:
   source:
     repoURL: https://github.com/Dans9881/platform-k8s
     targetRevision: main
-    path: k8s/infra/monitoring/crds
+    path: k8s/infra/monitoring
 
   destination:
     server: https://kubernetes.default.svc
