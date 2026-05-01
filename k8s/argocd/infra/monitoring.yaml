@@ -5,7 +5,6 @@ metadata:
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "3"
-    argocd.argoproj.io/compare-options: IgnoreExtraneous
 spec:
   project: default
 
@@ -24,11 +23,5 @@ spec:
     automated:
       prune: true
       selfHeal: true
-
-  ignoreDifferences:
-    - group: "*"
-      kind: "*"
-      managedFieldsManagers:
-        - kube-controller-manager
-        - prometheus-operator
-        - helm
+    syncOptions:
+      - ServerSideApply=true
