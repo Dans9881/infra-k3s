@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: flask-ml
+  namespace: flask-ml
+spec:
+  ingressClassName: traefik
+
+  tls:
+    - hosts:
+        - tes.kuyen.online
+      secretName: tes-kuyen-tls
+
+  rules:
+    - host: tes.kuyen.online
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: flask-ml
+                port:
+                  number: 80
