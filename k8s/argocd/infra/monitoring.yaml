@@ -14,9 +14,6 @@ spec:
     targetRevision: 58.0.0
     helm:
       releaseName: monitoring
-      values: |
-        grafana:
-          enabled: true
 
   destination:
     server: https://kubernetes.default.svc
@@ -26,5 +23,3 @@ spec:
     automated:
       prune: true
       selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
