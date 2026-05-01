@@ -25,3 +25,12 @@ spec:
       selfHeal: true
     syncOptions:
       - ServerSideApply=true
+      - Replace=true
+
+  ignoreDifferences:
+    - group: monitoring.coreos.com
+      kind: "*"
+    - group: ""
+      kind: Secret
+      name: monitoring-grafana
+      namespace: monitoring
