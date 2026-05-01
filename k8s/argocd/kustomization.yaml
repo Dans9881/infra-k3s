@@ -3,4 +3,5 @@ resources:
   - apps/flask-ml.yaml
   - infra/traefik.yaml
   - infra/cert-manager.yaml
+  - infra/monitoring-crds.yaml
   - infra/monitoring.yaml
