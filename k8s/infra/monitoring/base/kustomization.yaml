@@ -1,4 +1,4 @@
 resources:
   - namespace.yaml
   - crds
-  - ingress.yaml
+  - ingressroute.yaml
