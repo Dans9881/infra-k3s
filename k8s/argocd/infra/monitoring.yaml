@@ -23,3 +23,11 @@ spec:
     automated:
       prune: true
       selfHeal: true
+
+  ignoreDifferences:
+    - group: monitoring.coreos.com
+      kind: "*"
+    - group: ""
+      kind: Secret
+      name: monitoring-grafana
+      namespace: monitoring
