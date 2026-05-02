@@ -3,3 +3,4 @@ resources:
   - runnerset.yaml
   - service.yaml
   - rbac.yaml
+  - networkpolicy.yaml

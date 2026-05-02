@@ -30,13 +30,15 @@ spec:
 
       containers:
       - name: runner
-        image: summerwind/actions-runner:latest
+        image: docker.io/dans9881/runner-kubectl:latest
 
         env:
         - name: RUNNER_EPHEMERAL
           value: "true"
 
         securityContext:
+          runAsUser: 1000
+          runAsGroup: 1000
           allowPrivilegeEscalation: false
           readOnlyRootFilesystem: true
           capabilities:
