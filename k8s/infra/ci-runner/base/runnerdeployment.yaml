@@ -9,9 +9,29 @@ spec:
     spec:
       repository: Dans9881/platform-k8s
 
+      githubAPITokenFrom:
+        secretRef:
+          name: github-token
+          key: token
+
+      labels:
+        - self-hosted
+        - k8s
+        - buildkit
+
+      volumes:
+        - name: buildkit
+          emptyDir: {}
+
       containers:
         - name: runner
           image: summerwind/actions-runner:latest
+          env:
+            - name: BUILDKIT_HOST
+              value: tcp://localhost:1234
+          volumeMounts:
+            - name: buildkit
+              mountPath: /tmp/buildkit
           resources:
             limits:
               cpu: "2"
@@ -25,6 +45,9 @@ spec:
           securityContext:
             runAsUser: 1000
             runAsGroup: 1000
+          volumeMounts:
+            - name: buildkit
+              mountPath: /tmp/buildkit
           resources:
             limits:
               cpu: "2"
