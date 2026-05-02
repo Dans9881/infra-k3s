@@ -1,4 +1,4 @@
 resources:
   - namespace.yaml
-  - runnerdeployment.yaml
+  - runnerset.yaml
   - service.yaml
