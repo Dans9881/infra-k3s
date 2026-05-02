@@ -10,9 +10,9 @@ spec:
   project: default
 
   source:
-    repoURL: https://github.com/actions/actions-runner-controller
-    targetRevision: master
-    path: charts/actions-runner-controller
+    repoURL: https://actions-runner-controller.github.io/actions-runner-controller
+    chart: actions-runner-controller
+    targetRevision: 0.23.7
 
     helm:
       values: |
