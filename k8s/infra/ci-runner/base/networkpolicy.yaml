@@ -5,27 +5,42 @@ metadata:
   namespace: actions-runner
 
 spec:
-  podSelector: {}
-  policyTypes:
-  - Ingress
-  - Egress
+  podSelector:
+    matchLabels:
+      app: github-runner
 
-  ingress:
-  - {}
+  policyTypes:
+    - Ingress
+    - Egress
+
+  ingress: []  # deny all ingress
 
   egress:
-  - to:
-    - namespaceSelector:
-        matchLabels:
-          kubernetes.io/metadata.name: kube-system
-    ports:
-    - protocol: UDP
-      port: 53
+    # ALLOW DNS
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+      ports:
+        - protocol: UDP
+          port: 53
+        - protocol: TCP
+          port: 53
 
-  - to:
-    - ipBlock:
-        cidr: 0.0.0.0/0
+    # ALLOW KUBE API (INI YANG PENTING)
+    - to:
+        - ipBlock:
+            cidr: 10.96.0.1/32
+      ports:
+        - protocol: TCP
+          port: 443
 
-  # implicitly block:
-  # - kube-system API (kecuali DNS)
-  # - internal service lain (kalau ga di allow)
+    # ALLOW INTERNET (buat pull image / github)
+    - to:
+        - ipBlock:
+            cidr: 0.0.0.0/0
+      ports:
+        - protocol: TCP
+          port: 443
+        - protocol: TCP
+          port: 80
