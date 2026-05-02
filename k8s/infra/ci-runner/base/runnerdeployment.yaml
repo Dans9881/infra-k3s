@@ -20,22 +20,33 @@ spec:
     spec:
       repository: Dans9881/flask-ml-app
 
+      restartPolicy: Never
+
+      volumes:
+        - name: docker-config
+          secret:
+            secretName: docker-config
+
       containers:
       - name: runner
         image: summerwind/actions-runner:latest
 
         env:
-        - name: BUILDKIT_HOST
-          value: tcp://localhost:1234
+          - name: BUILDKIT_HOST
+            value: tcp://localhost:1234
+
+        volumeMounts:
+          - name: docker-config
+            mountPath: /home/runner/.docker
+            readOnly: true
 
         securityContext:
           runAsNonRoot: true
           runAsUser: 1000
           allowPrivilegeEscalation: false
-          readOnlyRootFilesystem: true
           capabilities:
             drop: ["ALL"]
-            
+
       - name: buildkit
         image: moby/buildkit:rootless
 
@@ -44,23 +55,12 @@ spec:
           - tcp://0.0.0.0:1234
 
         env:
-        - name: BUILDKITD_FLAGS
-          value: --oci-worker-no-process-sandbox
+          - name: BUILDKITD_FLAGS
+            value: --oci-worker-no-process-sandbox
 
         securityContext:
           runAsNonRoot: true
           runAsUser: 1000
           allowPrivilegeEscalation: false
-          readOnlyRootFilesystem: true
           capabilities:
             drop: ["ALL"]
-
-        volumeMounts:
-        - name: docker-config
-          mountPath: /home/user/.docker
-          readOnly: true
-
-      volumes:
-      - name: docker-config
-        secret:
-          secretName: docker-config
