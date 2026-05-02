@@ -1,0 +1,5 @@
+resources:
+  - actions.summerwind.dev_runnerdeployments.yaml
+  - actions.summerwind.dev_runnerreplicasets.yaml
+  - actions.summerwind.dev_runners.yaml
+  - actions.summerwind.dev_runnersets.yaml

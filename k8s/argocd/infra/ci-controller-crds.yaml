@@ -1,10 +1,10 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: ci-runner
+  name: ci-controller-crds
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "2"
+    argocd.argoproj.io/sync-wave: "0"
 
 spec:
   project: default
@@ -12,16 +12,13 @@ spec:
   source:
     repoURL: https://github.com/Dans9881/platform-k8s
     targetRevision: main
-    path: k8s/infra/ci-runner/overlays/prod
+    path: k8s/infra/ci-controller/crds
 
   destination:
     server: https://kubernetes.default.svc
-    namespace: actions-runner
+    namespace: actions-runner-system
 
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
-
-    syncOptions:
-      - CreateNamespace=true

@@ -4,7 +4,7 @@ metadata:
   name: ci-controller
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "0"
+    argocd.argoproj.io/sync-wave: "1"
 
 spec:
   project: default
@@ -16,6 +16,7 @@ spec:
 
     helm:
       values: |
+        installCRDs: false
         authSecret:
           create: false
           name: controller-manager
@@ -31,4 +32,3 @@ spec:
 
     syncOptions:
       - CreateNamespace=true
-      - ServerSideApply=true
