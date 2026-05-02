@@ -4,7 +4,7 @@ metadata:
   name: ci-controller
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-wave: "0"
 
 spec:
   project: default
@@ -12,21 +12,22 @@ spec:
   source:
     repoURL: https://actions-runner-controller.github.io/actions-runner-controller
     chart: actions-runner-controller
-    targetRevision: 0.23.7
+    targetRevision: 0.27.6
+
     helm:
       values: |
-        installCRDs: true
         authSecret:
-          create: false
-          name: github-token
+          create: true
+          github_token: YOUR_GITHUB_PAT
 
   destination:
     server: https://kubernetes.default.svc
-    namespace: actions-runner
+    namespace: actions-runner-system
 
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
+
     syncOptions:
       - CreateNamespace=true

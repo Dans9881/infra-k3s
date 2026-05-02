@@ -11,68 +11,8 @@ spec:
     spec:
       repository: Dans9881/platform-k8s
 
-      githubAPITokenFrom:
-        secretRef:
-          name: github-token
-          key: token
-
       labels:
         - self-hosted
         - k8s
-        - buildkit
 
-      securityContext:
-        fsGroup: 1000
-
-      volumes:
-        - name: buildkit
-          emptyDir: {}
-
-      containers:
-        # ========================
-        # RUNNER (GitHub Actions)
-        # ========================
-        - name: runner
-          image: summerwind/actions-runner:latest
-
-          securityContext:
-            runAsUser: 1000
-            runAsGroup: 1000
-            allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: false
-
-          env:
-            - name: BUILDKIT_HOST
-              value: tcp://localhost:1234
-
-            # IMPORTANT: no docker
-            - name: DOCKER_ENABLED
-              value: "false"
-
-          volumeMounts:
-            - name: buildkit
-              mountPath: /tmp/buildkit
-
-          resources:
-            limits:
-              cpu: "1"
-              memory: "1Gi"
-
-        - name: buildkitd
-          image: moby/buildkit:latest
-
-          securityContext:
-            privileged: true
-
-          args:
-            - "--addr"
-            - "tcp://0.0.0.0:1234"
-
-          volumeMounts:
-            - name: buildkit
-              mountPath: /tmp/buildkit
-
-          resources:
-            limits:
-              cpu: "1"
-              memory: "1Gi"
+      dockerEnabled: true
