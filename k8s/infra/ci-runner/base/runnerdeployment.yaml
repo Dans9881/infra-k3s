@@ -1,0 +1,31 @@
+apiVersion: actions.summerwind.dev/v1alpha1
+kind: RunnerDeployment
+metadata:
+  name: github-runner
+  namespace: actions-runner
+spec:
+  replicas: 1
+  template:
+    spec:
+      repository: Dans9881/platform-k8s
+
+      containers:
+        - name: runner
+          image: summerwind/actions-runner:latest
+          resources:
+            limits:
+              cpu: "2"
+              memory: "2Gi"
+
+        - name: buildkitd
+          image: moby/buildkit:rootless
+          args:
+            - "--addr"
+            - "tcp://0.0.0.0:1234"
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+          resources:
+            limits:
+              cpu: "2"
+              memory: "2Gi"
