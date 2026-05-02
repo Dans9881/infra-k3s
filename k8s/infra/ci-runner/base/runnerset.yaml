@@ -2,6 +2,8 @@ apiVersion: actions.summerwind.dev/v1alpha1
 kind: RunnerSet
 metadata:
   name: github-runner
+  namespace: actions-runner
+
 spec:
   replicas: 1
 
@@ -22,40 +24,81 @@ spec:
       securityContext:
         fsGroup: 1000
 
+      volumes:
+      - name: docker-config
+        secret:
+          secretName: docker-config
+
+      - name: buildkit-sock
+        emptyDir: {}
+
       containers:
+      # =========================
+      # RUNNER CONTAINER
+      # =========================
       - name: runner
         image: summerwind/actions-runner:latest
+
         env:
         - name: RUNNER_REPO
           value: Dans9881/flask-ml-app
+
+        - name: RUNNER_EPHEMERAL
+          value: "true"
+
         - name: BUILDKIT_HOST
-          value: tcp://localhost:1234
+          value: unix:///run/buildkit/buildkitd.sock
 
         volumeMounts:
         - name: docker-config
           mountPath: /home/runner/.docker
           readOnly: true
 
+        - name: buildkit-sock
+          mountPath: /run/buildkit
+
+        securityContext:
+          runAsNonRoot: true
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop: ["ALL"]
+
+        resources:
+          limits:
+            cpu: "1"
+            memory: "1Gi"
+          requests:
+            cpu: "200m"
+            memory: "256Mi"
+
+      # =========================
+      # BUILDKIT CONTAINER
+      # =========================
       - name: buildkit
         image: moby/buildkit:rootless
+
         args:
           - --addr
-          - tcp://0.0.0.0:1234
-
-        env:
-        - name: BUILDKITD_FLAGS
-          value: --oci-worker-no-process-sandbox
+          - unix:///run/buildkit/buildkitd.sock
 
         securityContext:
           runAsUser: 1000
           runAsGroup: 1000
+          allowPrivilegeEscalation: false
 
         volumeMounts:
         - name: docker-config
-          mountPath: /home/user/.docker
+          mountPath: /home/runner/.docker
           readOnly: true
 
-      volumes:
-      - name: docker-config
-        secret:
-          secretName: docker-config
+        - name: buildkit-sock
+          mountPath: /run/buildkit
+
+        resources:
+          limits:
+            cpu: "2"
+            memory: "2Gi"
+          requests:
+            cpu: "500m"
+            memory: "512Mi"
