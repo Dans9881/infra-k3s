@@ -15,7 +15,6 @@ spec:
       - --dockerfile=Dockerfile
       - --context=dir:///workspace
       - --destination=docker.io/dans9881/flask-ml:latest
-
       - --cache=true
       - --cache-repo=docker.io/dans9881/cache
 

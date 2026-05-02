@@ -9,6 +9,8 @@ spec:
 
   repository: Dans9881/flask-ml-app
 
+  dockerEnabled: false
+
   selector:
     matchLabels:
       app: github-runner
@@ -31,13 +33,11 @@ spec:
         image: summerwind/actions-runner:latest
 
         env:
-        - name: RUNNER_REPO
-          value: Dans9881/flask-ml-app
-
         - name: RUNNER_EPHEMERAL
           value: "true"
 
         securityContext:
           allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
           capabilities:
             drop: ["ALL"]
