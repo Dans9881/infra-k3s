@@ -9,7 +9,7 @@ spec:
 
   template:
     spec:
-      repository: Dans9881/platform-k8s
+      repository: Dans9881/flask-ml-app
 
       labels:
         - self-hosted
