@@ -10,9 +10,9 @@ spec:
   project: default
 
   source:
-    repoURL: https://actions-runner-controller.github.io/actions-runner-controller
-    chart: actions-runner-controller
-    targetRevision: 0.21.3
+    repoURL: https://github.com/actions/actions-runner-controller
+    targetRevision: master
+    path: charts/actions-runner-controller
 
     helm:
       values: |
@@ -28,5 +28,6 @@ spec:
     automated:
       prune: true
       selfHeal: true
+
     syncOptions:
       - CreateNamespace=true
