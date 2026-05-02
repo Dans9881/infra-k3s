@@ -10,9 +10,9 @@ spec:
   project: default
 
   source:
-    repoURL: ghcr.io/actions/actions-runner-controller-charts
+    repoURL: https://actions-runner-controller.github.io/actions-runner-controller
     chart: actions-runner-controller
-    targetRevision: 0.9.3
+    targetRevision: 0.21.3
 
     helm:
       values: |
