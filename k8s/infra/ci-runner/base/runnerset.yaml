@@ -9,6 +9,12 @@ spec:
 
   repository: Dans9881/flask-ml-app
 
+  selector:
+    matchLabels:
+      app: github-runner
+
+  serviceName: github-runner
+
   template:
     metadata:
       labels:
