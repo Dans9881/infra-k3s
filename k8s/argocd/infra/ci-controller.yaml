@@ -9,7 +9,7 @@ spec:
   source:
     repoURL: https://actions-runner-controller.github.io/actions-runner-controller
     chart: actions-runner-controller
-    targetRevision: latest
+    targetRevision: 0.23.7
     helm:
       values: |
         authSecret:
@@ -24,3 +24,5 @@ spec:
     automated:
       prune: true
       selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
