@@ -3,17 +3,8 @@ kind: RunnerSet
 metadata:
   name: github-runner
   namespace: actions-runner
-
 spec:
   replicas: 1
-
-  repository: Dans9881/flask-ml-app
-
-  serviceName: github-runner
-
-  selector:
-    matchLabels:
-      app: github-runner
 
   template:
     metadata:
@@ -21,35 +12,17 @@ spec:
         app: github-runner
 
     spec:
+      repository: Dans9881/flask-ml-app
+
       containers:
       - name: runner
         image: summerwind/actions-runner:latest
-
         env:
         - name: BUILDKIT_HOST
           value: tcp://localhost:1234
-
-        volumeMounts:
-        - name: docker-config
-          mountPath: /home/runner/.docker
-          readOnly: true
 
       - name: buildkit
         image: moby/buildkit:rootless
         args:
           - --addr
           - tcp://0.0.0.0:1234
-
-        env:
-        - name: BUILDKITD_FLAGS
-          value: --oci-worker-no-process-sandbox
-
-        volumeMounts:
-        - name: docker-config
-          mountPath: /home/user/.docker
-          readOnly: true
-
-      volumes:
-      - name: docker-config
-        secret:
-          secretName: docker-config
