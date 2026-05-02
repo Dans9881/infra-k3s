@@ -39,6 +39,9 @@ spec:
         - name: RUNNER_EPHEMERAL
           value: "true"
 
+        - name: KUBECONFIG
+          value: ""
+
         securityContext:
           runAsUser: 1000
           runAsGroup: 1000
