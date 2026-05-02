@@ -8,4 +8,4 @@ resources:
   - infra/monitoring.yaml
   - infra/ci-controller.yaml
   - infra/ci-runner.yaml
-  - ci-controller-crds.yaml
+  - infra/ci-controller-crds.yaml
