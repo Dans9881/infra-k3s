@@ -31,6 +31,10 @@ spec:
         seccompProfile:
           type: RuntimeDefault
 
+      volumes:
+      - name: kube-dir
+        emptyDir: {}
+
       containers:
       - name: runner
         image: docker.io/dans9881/runner-kubectl:latest
@@ -41,6 +45,10 @@ spec:
 
         - name: KUBECONFIG
           value: ""
+
+        volumeMounts:
+        - name: kube-dir
+          mountPath: /home/runner/.kube
 
         securityContext:
           runAsUser: 1000
