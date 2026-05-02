@@ -9,33 +9,18 @@ spec:
 
   repository: Dans9881/flask-ml-app
 
-  selector:
-    matchLabels:
-      app: github-runner
-
-  serviceName: github-runner
-
   template:
     metadata:
       labels:
         app: github-runner
 
     spec:
+      serviceAccountName: runner-sa
+
       securityContext:
         fsGroup: 1000
 
-      volumes:
-      - name: docker-config
-        secret:
-          secretName: docker-config
-
-      - name: buildkit-sock
-        emptyDir: {}
-
       containers:
-      # =========================
-      # RUNNER CONTAINER
-      # =========================
       - name: runner
         image: summerwind/actions-runner:latest
 
@@ -46,59 +31,9 @@ spec:
         - name: RUNNER_EPHEMERAL
           value: "true"
 
-        - name: BUILDKIT_HOST
-          value: unix:///run/buildkit/buildkitd.sock
-
-        volumeMounts:
-        - name: docker-config
-          mountPath: /home/runner/.docker
-          readOnly: true
-
-        - name: buildkit-sock
-          mountPath: /run/buildkit
-
         securityContext:
           runAsNonRoot: true
           allowPrivilegeEscalation: false
           readOnlyRootFilesystem: true
           capabilities:
             drop: ["ALL"]
-
-        resources:
-          limits:
-            cpu: "1"
-            memory: "1Gi"
-          requests:
-            cpu: "200m"
-            memory: "256Mi"
-
-      # =========================
-      # BUILDKIT CONTAINER
-      # =========================
-      - name: buildkit
-        image: moby/buildkit:rootless
-
-        args:
-          - --addr
-          - unix:///run/buildkit/buildkitd.sock
-
-        securityContext:
-          runAsUser: 1000
-          runAsGroup: 1000
-          allowPrivilegeEscalation: false
-
-        volumeMounts:
-        - name: docker-config
-          mountPath: /home/runner/.docker
-          readOnly: true
-
-        - name: buildkit-sock
-          mountPath: /run/buildkit
-
-        resources:
-          limits:
-            cpu: "2"
-            memory: "2Gi"
-          requests:
-            cpu: "500m"
-            memory: "512Mi"
