@@ -2,18 +2,16 @@ apiVersion: actions.summerwind.dev/v1alpha1
 kind: RunnerSet
 metadata:
   name: github-runner
-  namespace: actions-runner
-
 spec:
   replicas: 1
 
   repository: Dans9881/flask-ml-app
 
-  serviceName: github-runner
-
   selector:
     matchLabels:
       app: github-runner
+
+  serviceName: github-runner
 
   template:
     metadata:
@@ -21,11 +19,15 @@ spec:
         app: github-runner
 
     spec:
+      securityContext:
+        fsGroup: 1000
+
       containers:
       - name: runner
         image: summerwind/actions-runner:latest
-
         env:
+        - name: RUNNER_REPO
+          value: Dans9881/flask-ml-app
         - name: BUILDKIT_HOST
           value: tcp://localhost:1234
 
@@ -43,6 +45,10 @@ spec:
         env:
         - name: BUILDKITD_FLAGS
           value: --oci-worker-no-process-sandbox
+
+        securityContext:
+          runAsUser: 1000
+          runAsGroup: 1000
 
         volumeMounts:
         - name: docker-config
