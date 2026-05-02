@@ -19,9 +19,15 @@ spec:
         - k8s
         - buildkit
 
+      nodeSelector:
+        kubernetes.io/os: linux
+
       volumes:
         - name: buildkit
           emptyDir: {}
+
+      securityContext:
+        runAsNonRoot: true
 
       containers:
         - name: runner
@@ -29,13 +35,25 @@ spec:
           env:
             - name: BUILDKIT_HOST
               value: tcp://localhost:1234
+            - name: DOCKER_ENABLED
+              value: "false"
           volumeMounts:
             - name: buildkit
               mountPath: /tmp/buildkit
+
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+
           resources:
+            requests:
+              cpu: "250m"
+              memory: "256Mi"
             limits:
-              cpu: "2"
-              memory: "2Gi"
+              cpu: "500m"
+              memory: "512Mi"
 
         - name: buildkitd
           image: moby/buildkit:rootless
@@ -45,10 +63,18 @@ spec:
           securityContext:
             runAsUser: 1000
             runAsGroup: 1000
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+
           volumeMounts:
             - name: buildkit
               mountPath: /tmp/buildkit
+
           resources:
+            requests:
+              cpu: "500m"
+              memory: "512Mi"
             limits:
-              cpu: "2"
-              memory: "2Gi"
+              cpu: "1"
+              memory: "1Gi"
