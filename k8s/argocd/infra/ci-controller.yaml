@@ -12,6 +12,7 @@ spec:
     targetRevision: 0.23.7
     helm:
       values: |
+        installCRDs: true
         authSecret:
           create: false
           name: github-token
