@@ -3,8 +3,10 @@ kind: RunnerDeployment
 metadata:
   name: github-runner
   namespace: actions-runner
+
 spec:
   replicas: 1
+
   template:
     spec:
       repository: Dans9881/platform-k8s
@@ -27,6 +29,9 @@ spec:
           emptyDir: {}
 
       containers:
+        # ========================
+        # RUNNER (GitHub Actions)
+        # ========================
         - name: runner
           image: summerwind/actions-runner:latest
 
@@ -39,6 +44,8 @@ spec:
           env:
             - name: BUILDKIT_HOST
               value: tcp://localhost:1234
+
+            # IMPORTANT: no docker
             - name: DOCKER_ENABLED
               value: "false"
 
@@ -52,12 +59,10 @@ spec:
               memory: "1Gi"
 
         - name: buildkitd
-          image: moby/buildkit:rootless
+          image: moby/buildkit:latest
 
           securityContext:
-            runAsUser: 1000
-            runAsGroup: 1000
-            allowPrivilegeEscalation: false
+            privileged: true
 
           args:
             - "--addr"
