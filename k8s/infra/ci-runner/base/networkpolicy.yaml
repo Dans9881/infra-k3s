@@ -1,46 +1,37 @@
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
 metadata:
   name: runner-restrict
   namespace: actions-runner
 
 spec:
-  podSelector:
+  endpointSelector:
     matchLabels:
       app: github-runner
 
-  policyTypes:
-    - Ingress
-    - Egress
-
-  ingress: []  # deny all ingress
+  ingress: []
 
   egress:
-    # ALLOW DNS
-    - to:
-        - namespaceSelector:
-            matchLabels:
-              kubernetes.io/metadata.name: kube-system
-      ports:
-        - protocol: UDP
-          port: 53
-        - protocol: TCP
-          port: 53
+    - toEndpoints:
+        - matchLabels:
+            k8s:io.kubernetes.pod.namespace: kube-system
+      toPorts:
+        - ports:
+            - port: "53"
+              protocol: UDP
+            - port: "53"
+              protocol: TCP
 
-    # ALLOW KUBE API (INI YANG PENTING)
-    - to:
-        - ipBlock:
-            cidr: 10.96.0.1/32
-      ports:
-        - protocol: TCP
-          port: 443
+    - toEntities:
+        - kube-apiserver
+      toPorts:
+        - ports:
+            - port: "443"
+              protocol: TCP
 
-    # ALLOW INTERNET (buat pull image / github)
-    - to:
-        - ipBlock:
-            cidr: 0.0.0.0/0
-      ports:
-        - protocol: TCP
-          port: 443
-        - protocol: TCP
-          port: 80
+    - toEntities:
+        - world
+      toPorts:
+        - ports:
+            - port: "443"
+            - port: "80"
