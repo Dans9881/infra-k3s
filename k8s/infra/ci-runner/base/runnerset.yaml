@@ -27,6 +27,9 @@ spec:
 
       securityContext:
         fsGroup: 1000
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
 
       containers:
       - name: runner
@@ -39,19 +42,11 @@ spec:
         securityContext:
           runAsUser: 1000
           runAsGroup: 1000
+          runAsNonRoot: true
           allowPrivilegeEscalation: false
           readOnlyRootFilesystem: true
           capabilities:
-            drop: ["ALL"]
-
-        volumeMounts:
-        - name: runner-data
-          mountPath: /runner
-        - name: work
-          mountPath: /runner/_work
-
-      volumes:
-      - name: runner-data
-        emptyDir: {}
-      - name: work
-        emptyDir: {}
+            drop:
+              - ALL
+          seccompProfile:
+            type: RuntimeDefault
