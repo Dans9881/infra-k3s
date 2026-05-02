@@ -17,8 +17,8 @@ spec:
     helm:
       values: |
         authSecret:
-          create: true
-          github_token: YOUR_GITHUB_PAT
+          create: false
+          name: controller-manager
 
   destination:
     server: https://kubernetes.default.svc
