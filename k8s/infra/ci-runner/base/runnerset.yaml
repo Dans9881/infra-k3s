@@ -21,7 +21,7 @@ spec:
 
     spec:
       serviceAccountName: runner-sa
-      automountServiceAccountToken: false
+      automountServiceAccountToken: true
 
       securityContext:
         runAsNonRoot: true
@@ -32,8 +32,6 @@ spec:
         - name: work
           emptyDir: {}
         - name: tmp
-          emptyDir: {}
-        - name: kaniko-tmp
           emptyDir: {}
 
       containers:
@@ -49,8 +47,6 @@ spec:
               mountPath: /runner/_work
             - name: tmp
               mountPath: /tmp
-            - name: kaniko-tmp
-              mountPath: /kaniko
 
           securityContext:
             runAsUser: 1001
