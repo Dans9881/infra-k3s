@@ -1,0 +1,46 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: kaniko-build
+  namespace: actions-runner
+  labels:
+    app: kaniko-build
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+
+      containers:
+        - name: kaniko
+          image: gcr.io/kaniko-project/executor:latest
+
+          args:
+            - "--dockerfile=/workspace/Dockerfile"
+            - "--context=dir:///workspace"
+            - "--destination=index.docker.io/dans9881/flask-ml-app:latest"
+            - "--destination=index.docker.io/dans9881/flask-ml-app:${IMAGE_TAG}"
+            - "--verbosity=info"
+
+          volumeMounts:
+            - name: workspace
+              mountPath: /workspace
+            - name: docker-config
+              mountPath: /kaniko/.docker
+
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            seccompProfile:
+              type: RuntimeDefault
+
+      volumes:
+        - name: workspace
+          emptyDir: {}
+
+        - name: docker-config
+          secret:
+            secretName: dockerhub-secret
