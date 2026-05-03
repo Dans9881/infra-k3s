@@ -9,6 +9,12 @@ spec:
   repository: Dans9881/flask-ml-app
   dockerEnabled: false
 
+  selector:
+    matchLabels:
+      app: github-runner
+
+  serviceName: github-runner
+
   template:
     metadata:
       labels:
@@ -40,7 +46,6 @@ spec:
           volumeMounts:
             - name: docker-config
               mountPath: /home/runner/.docker
-
             - name: work
               mountPath: /runner/_work
 
