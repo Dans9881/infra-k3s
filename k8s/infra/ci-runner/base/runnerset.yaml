@@ -8,6 +8,7 @@ spec:
   replicas: 1
   repository: Dans9881/flask-ml-app
   serviceName: github-runner
+  githubConfigSecret: github-token
   dockerEnabled: false
 
   selector:
