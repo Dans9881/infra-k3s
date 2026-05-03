@@ -7,8 +7,8 @@ metadata:
 spec:
   replicas: 1
   repository: Dans9881/flask-ml-app
-
   serviceName: github-runner
+  dockerEnabled: false
 
   selector:
     matchLabels:
@@ -51,5 +51,10 @@ spec:
           securityContext:
             runAsUser: 1001
             runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
             seccompProfile:
               type: RuntimeDefault
