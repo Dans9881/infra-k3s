@@ -42,8 +42,12 @@ spec:
               value: "true"
 
           volumeMounts:
-            - name: work
-              mountPath: /runner/_work
+            - name: kaniko
+              mountPath: /kaniko
+
+          volumes:
+            - name: kaniko
+              emptyDir: {}
 
           securityContext:
             runAsUser: 1001
