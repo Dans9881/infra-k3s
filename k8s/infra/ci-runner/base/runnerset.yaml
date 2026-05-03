@@ -31,8 +31,6 @@ spec:
       volumes:
         - name: work
           emptyDir: {}
-        - name: kaniko
-          emptyDir: {}
         - name: tmp
           emptyDir: {}
 
@@ -47,8 +45,6 @@ spec:
           volumeMounts:
             - name: work
               mountPath: /runner/_work
-            - name: kaniko
-              mountPath: /kaniko
             - name: tmp
               mountPath: /tmp
 
