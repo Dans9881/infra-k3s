@@ -30,8 +30,6 @@ spec:
           type: RuntimeDefault
 
       volumes:
-        - name: docker-config
-          emptyDir: {}
         - name: work
           emptyDir: {}
 
@@ -44,8 +42,6 @@ spec:
               value: "true"
 
           volumeMounts:
-            - name: docker-config
-              mountPath: /home/runner/.docker
             - name: work
               mountPath: /runner/_work
 
