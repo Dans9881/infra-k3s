@@ -51,10 +51,5 @@ spec:
           securityContext:
             runAsUser: 1001
             runAsNonRoot: true
-            allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
-            capabilities:
-              drop:
-                - ALL
             seccompProfile:
               type: RuntimeDefault
