@@ -33,6 +33,8 @@ spec:
           emptyDir: {}
         - name: kaniko
           emptyDir: {}
+        - name: tmp
+          emptyDir: {}
 
       containers:
         - name: runner
@@ -47,6 +49,8 @@ spec:
               mountPath: /runner/_work
             - name: kaniko
               mountPath: /kaniko
+            - name: tmp
+              mountPath: /tmp
 
           securityContext:
             runAsUser: 1001
