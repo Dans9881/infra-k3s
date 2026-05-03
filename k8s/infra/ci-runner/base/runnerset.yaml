@@ -31,12 +31,16 @@ spec:
       volumes:
         - name: work
           emptyDir: {}
-        - name: kaniko
-          emptyDir: {}
+        - name: docker-config
+          secret:
+            secretName: dockerhub-secret
         - name: tmp
           emptyDir: {}
 
       containers:
+        # =========================
+        # RUNNER (GitHub Actions)
+        # =========================
         - name: runner
           image: dans9881/runner:latest
 
@@ -47,8 +51,10 @@ spec:
           volumeMounts:
             - name: work
               mountPath: /runner/_work
-            - name: kaniko
-              mountPath: /kaniko
+            - name: work
+              mountPath: /workspace   # 🔥 shared with kaniko
+            - name: docker-config
+              mountPath: /kaniko/.docker
             - name: tmp
               mountPath: /tmp
 
@@ -56,7 +62,35 @@ spec:
             runAsUser: 1001
             runAsNonRoot: true
             allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
+            readOnlyRootFilesystem: false   # 🔥 IMPORTANT (biar gak error lagi)
+            capabilities:
+              drop:
+                - ALL
+            seccompProfile:
+              type: RuntimeDefault
+
+        # =========================
+        # KANIKO SIDECAR
+        # =========================
+        - name: kaniko
+          image: gcr.io/kaniko-project/executor:latest
+
+          args:
+            - "--help"   # idle mode
+
+          volumeMounts:
+            - name: work
+              mountPath: /workspace
+            - name: docker-config
+              mountPath: /kaniko/.docker
+            - name: tmp
+              mountPath: /tmp
+
+          securityContext:
+            runAsUser: 1000
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: false
             capabilities:
               drop:
                 - ALL
