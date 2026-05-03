@@ -6,16 +6,8 @@ metadata:
 
 spec:
   replicas: 1
-
   repository: Dans9881/flask-ml-app
-
   dockerEnabled: false
-
-  selector:
-    matchLabels:
-      app: github-runner
-
-  serviceName: github-runner
 
   template:
     metadata:
@@ -25,39 +17,25 @@ spec:
     spec:
       serviceAccountName: runner-sa
 
+      automountServiceAccountToken: false
+
       securityContext:
-        fsGroup: 1001
         runAsNonRoot: true
         seccompProfile:
           type: RuntimeDefault
 
-      volumes:
-      - name: kube-dir
-        emptyDir: {}
-
       containers:
       - name: runner
-        image: docker.io/dans9881/runner-kubectl:latest
+        image: summerwind/actions-runner:latest
 
         env:
         - name: RUNNER_EPHEMERAL
           value: "true"
 
-        - name: KUBECONFIG
-          value: ""
-
-        volumeMounts:
-        - name: kube-dir
-          mountPath: /home/runner/.kube
-
         securityContext:
           runAsUser: 1001
-          runAsGroup: 1001
           runAsNonRoot: true
           allowPrivilegeEscalation: false
           readOnlyRootFilesystem: true
           capabilities:
-            drop:
-              - ALL
-          seccompProfile:
-            type: RuntimeDefault
+            drop: ["ALL"]
