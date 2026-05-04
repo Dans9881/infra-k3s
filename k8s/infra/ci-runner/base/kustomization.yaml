@@ -5,3 +5,4 @@ resources:
   - rbac.yaml
   - networkpolicy.yaml
   - dockerhub-secret.yaml
+  - sealed-secret.yaml
