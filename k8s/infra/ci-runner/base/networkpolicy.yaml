@@ -12,6 +12,7 @@ spec:
   ingress: []
 
   egress:
+    # DNS
     - toEndpoints:
         - matchLabels:
             k8s:io.kubernetes.pod.namespace: kube-system
@@ -22,6 +23,14 @@ spec:
             - port: "53"
               protocol: TCP
 
+    - toEntities:
+        - kube-apiserver
+      toPorts:
+        - ports:
+            - port: "443"
+              protocol: TCP
+
+    # Internet (GitHub, dll)
     - toEntities:
         - world
       toPorts:
