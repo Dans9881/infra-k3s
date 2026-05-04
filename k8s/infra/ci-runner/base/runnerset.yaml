@@ -3,12 +3,16 @@ kind: RunnerSet
 metadata:
   name: github-runner
   namespace: actions-runner
+  labels:
+    app: github-runner
 
 spec:
   replicas: 1
+
   repository: Dans9881/flask-ml-app
   serviceName: github-runner
   githubConfigSecret: github-token
+
   dockerEnabled: false
 
   selector:
@@ -29,6 +33,8 @@ spec:
         seccompProfile:
           type: RuntimeDefault
 
+      restartPolicy: Always
+
       volumes:
         - name: work
           emptyDir: {}
@@ -38,16 +44,28 @@ spec:
       containers:
         - name: runner
           image: dans9881/runner:latest
+          imagePullPolicy: Always
 
           env:
             - name: RUNNER_EPHEMERAL
               value: "true"
+
+            - name: RUNNER_LABELS
+              value: "k8s,self-hosted,linux"
 
           volumeMounts:
             - name: work
               mountPath: /runner/_work
             - name: tmp
               mountPath: /tmp
+
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "256Mi"
+            limits:
+              cpu: "1"
+              memory: "1Gi"
 
           securityContext:
             runAsUser: 1001
